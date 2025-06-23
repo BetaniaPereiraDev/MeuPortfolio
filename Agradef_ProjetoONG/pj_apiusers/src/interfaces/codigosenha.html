@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificação de Código</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset básico e estilo da página */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body, html {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f4f8;
+    }
+
+    .container {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 300px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      color: #4a4a4a;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin-bottom: 1.5rem;
+      color: #4a4a4a;
+    }
+
+    .form-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group input {
+      width: 40px;
+      height: 40px;
+      font-size: 1.25rem;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .button {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      color: white;
+      background-color: #3a6df0;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background-color: #324dbf;
+    }
+
+    .error {
+  border-color: red;
+}
+.form-group input:focus {
+  border-color: #3a6df0;
+  box-shadow: 0 0 5px rgba(58, 109, 240, 0.3);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+    /* Estilo do link para reenviar código */
+    .resend-link {
+      display: block;
+      text-decoration: none;
+      color: #3a6df0;
+      margin-top: 10px;
+      text-align: right;
+    }
+
+    .resend-link:hover {
+      color: #324dbf;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Verificação de Código</h2>
+    <p>Insira o código enviado para o seu email:</p>
+    <form id="verification-form">
+      <div class="form-group">
+        <input type="text" maxlength="1" required>
+        <input type="text" maxlength="1" required>
+        <input type="text" maxlength="1" required>
+        <input type="text" maxlength="1" required>
+        <input type="text" maxlength="1" required>
+      </div>
+      <button type="button" class="button" onclick="submitVerificationCode()" disabled>Verificar Código</button>
+      <a href="#" class="resend-link" onclick="resendCode()">Reenviar Código</a>
+    </form>
+  </div>
+
+  <script>
+     // Função para capturar e exibir o código digitado
+     function submitVerificationCode() {
+      const inputs = document.querySelectorAll('.form-group input');
+      let code = '';
+      inputs.forEach(input => {
+        code += input.value;
+      });
+
+      if (code.length === 5) {
+        alert(`Código verificado: ${code}`);
+        // Redirecionar para outra página ou exibir uma animação de sucesso
+        window.location.href = 'sucesso.html';
+      } else {
+        alert('Por favor, preencha todos os campos.');
+      }
+    }
+
+    // Adiciona o foco ao próximo campo automaticamente
+    const inputs = document.querySelectorAll('.form-group input');
+    inputs.forEach((input, index) => {
+      input.addEventListener('input', () => {
+        if (input.value.length === 1 && index < inputs.length - 1) {
+          inputs[index + 1].focus();
+        }
+      });
+
+      // Volta ao campo anterior com Backspace
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Backspace' && index > 0 && input.value === '') {
+          inputs[index - 1].focus();
+        }
+      });
+    });
+
+    // Função para reenviar código
+    function resendCode() {
+      alert('Um novo código foi enviado para o seu email.');
+      // Aqui você poderia integrar com o backend para enviar um novo código
+    }
+
+    // Checa se todos os campos estão preenchidos antes de habilitar o botão
+    const submitButton = document.querySelector('.button');
+    inputs.forEach(input => {
+      input.addEventListener('input', () => {
+        const allFilled = Array.from(inputs).every(input => input.value !== '');
+        submitButton.disabled = !allFilled;
+      });
+    });
+    
+  </script>
+</body>
+</html>

@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Presenca</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: #ffffff;
+      color: rgb(73, 72, 72);
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Ícone de Menu */
+    .menu-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Barra de Pesquisa */
+    .container-input {
+      position: relative;
+      margin-right: 30px;
+    }
+
+    .input {
+      margin-left: 20px;
+      width: 120px;
+      padding: 10px 0px 10px 40px;
+      border-radius: 9999px;
+      border: solid 1px #333;
+      outline: none;
+      opacity: 0.8;
+      background-color: #adabab44;
+      transition: all 0.1s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .input:focus {
+      opacity: 1;
+      width: 220px;
+    }
+
+    .container-input svg {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translate(0, -50%);
+    }
+
+    /* Logout Button */
+    .header-profile {
+      position: relative;
+    }
+
+    .logout-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition-duration: 0.3s;
+      background-color: rgba(255, 255, 255, 0.482);
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+    }
+
+    .logout-button:hover {
+      background-color: rgba(255, 255, 255, 0.7);
+      transform: scale(1.1);
+    }
+
+    .logout-button svg {
+      width: 20px;
+      height: 20px;
+      fill: #333;
+    }
+
+    .tooltip {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #333;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+      pointer-events: none;
+    }
+
+    .logout-button:hover .tooltip {
+      opacity: 1;
+    }
+
+    /* Sidebar */
+    
+    .sidemenu {
+      position: fixed;
+      top: 0;
+      left: -260px;
+      width: 260px;
+      height: 100%;
+      background-color: #ffffff;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+      transition: left 0.3s ease;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .sidemenu.active {
+      left: 0;
+    }
+
+    .sidemenu h2 {
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      color: #333;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 10px;
+    }
+
+    .sidemenu ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidemenu li {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
+      cursor: pointer;
+    }
+
+    .sidemenu li svg {
+      margin-right: 10px;
+      width: 20px;
+      height: 20px;
+      fill: #555;
+    }
+
+    .sidemenu li span {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .sidemenu .separator {
+      margin: 20px 0;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    @media (max-width: 768px) {
+      .tab-bar {
+        display: flex;
+      }
+    }
+      /* Conteúdo Principal */
+      .container {
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      flex: 1;
+    }
+     /* Card */
+     .card {
+    background-color: rgb(255, 255, 255);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 240px; /* Diminua o tamanho do card em desktop */
+    max-height: 340px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: scale(1.09);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+    } 
+    .card h3 {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+
+    .card button {
+      background-color: #3a6df0;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .card button:hover {
+      background-color: #4338ca;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .input {
+        width: 100%;
+        max-width: 250px;
+      }
+      .card {
+        max-width: 300px; /* Aumenta o tamanho do card em dispositivos móveis */
+    }
+    }
+ /* Tab Bar */
+ .tab-bar {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-bottom: -11px;
+      width: 97%;
+      height: 60px;
+      background-color: #ffffff;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-radius: 30px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+      z-index: 999; /* Garantir que a tab bar não sobreponha o sidebar */
+      transition: transform 0.3s ease;
+    }
+
+    .tab-bar.hidden {
+     display: none;
+    }
+
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tab-item svg {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 4px;
+      fill: #a3a3a3;
+      transition: fill 0.3s ease;
+    }
+
+    .tab-item.active svg {
+      fill: #3a6df0;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .tab-bar {
+        display: flex;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .tab-bar {
+        display: none;
+      }
+    }
+
+    .tab-item span {
+      font-size: 12px;
+      color: #a3a3a3;
+    }
+
+    .tab-item.active span {
+      color: #3a6df0;
+    }
+
+      /* Tabela */
+    table {
+     
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border: 1px solid #d1d1d1;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f5f5f5;
+      font-weight: 600;
+      color: #333;
+    }
+
+    td {
+      background-color: #ffffff;
+      color: #555;
+    }
+
+    /* Dropdown com Checkboxes */
+    .checkbox-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .checkbox-dropdown select {
+      padding: 5px;
+      width: 200px;
+      cursor: pointer;
+      border-radius: 5px;
+      border: 1px solid #d1d1d1;
+      background-color: #fff;
+    }
+
+    .checkbox-dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: white;
+      border: 1px solid #ccc;
+      padding: 10px;
+      z-index: 1;
+      width: 200px;
+    }
+
+    .checkbox-dropdown:hover .checkbox-dropdown-content {
+      display: block;
+    }
+
+    .checkbox-dropdown-content label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    /* Botão Presente */
+    .presente-button {
+      padding: 8px 15px;
+      background-color: #3a6df0;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .presente-button:hover {
+      background-color: #4338ca;
+      transform: scale(1.05);
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .container {
+      padding: 1rem;
+      display: block;
+      text-align: left;
+      margin-top: 100px;
+
+      }
+
+      table {
+        width: 100%;
+        font-size: 0.9rem;
+        margin: 0;
+      }
+
+      .input {
+        width: 100%;
+        max-width: 250px;
+      }
+
+      th, td {
+        padding: 8px; /* Reduzir o padding */
+      }
+    }
+    .custom-alert {
+  display: none; /* Oculto inicialmente */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color:  #4338ca; /* Cor de fundo do alerta */
+  color: white; /* Cor do texto */
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 0;
+  transform: translateY(20px); /* Desloca o alerta para baixo inicialmente */
+}
+
+.custom-alert.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0); /* Move o alerta para a posição correta */
+}
+.data-atual{
+ background-color:#adabab44;
+ border-color: transparent;
+ width: 90px;
+ height: 30px;
+ border-radius: 10px;
+
+}
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="menu-icon" id="menu-icon">☰</div>
+
+    <div class="container-input">
+      <input type="text" placeholder="Search" class="input" id="search-input">
+      <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920">
+        <path d="M790.588..."></path>
+      </svg>
+    </div>
+
+    <div class="header-profile">
+     <!--  <button class="logout-button" id="close-button">
+        <svg viewBox="0 0 512 512">
+          <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9z"/>
+        </svg>
+        <div class="tooltip">Sair</div>
+      </button> -->
+      <button class="data-atual" id="dataAtual"></button>
+      <!-- <div class="data-atual" id="dataAtual"></div> -->
+    
+      
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <nav class="sidemenu" id="sidemenu">
+    <h2>Configurações</h2>
+    <ul>
+      <li>
+        <svg viewBox="0 0 24 24">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/>
+        </svg>
+        <a href="configuracao.html" style="text-decoration: none;"><span>Configurações</span></a>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24">
+          <path d="M21 7H3v10h18V7z"/>
+        </svg>
+      <span>Notificações</span>
+      </li>
+      <li>
+        
+        <svg viewBox="0 0 24 24">
+          <path d="M17 16l4-4-4-4v3H3v2h14v3z"/>
+        </svg>
+        <span>Sair</span>
+      </li>
+    </ul>
+
+    <div class="separator"></div>
+
+ <!--    <h2>Ajuda</h2>
+    <ul>
+      <li>
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 15h-2v-2h2zm1.07-7.75l-.9.92A3.49 3.49 0 0 0 11 12.5V14h-2v-1.5a5.5 5.5 0 0 1 1.64-3.93l1.13-1.17a1.5 1.5 0 1 0-2.2-2.12l-.88.9L7.11 6a3.5 3.5 0 0 1 6.06-2.36 3.5 3.5 0 0 1-2.18 5.36z"/>
+        </svg>
+        <span>Reportar problema</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24">
+          <path d="M21 3H3v18h18V3zM9 17H7v-2h2v2zm0-4H7v-4h2v4zm10 4h-8v-2h8v2zm0-4h-8v-4h8v4z"/>
+        </svg>
+        <span>Enviar feedback</span>
+      </li>
+    </ul> -->
+  </nav>
+
+   
+  <!-- Container Principal -->
+  <div class="container">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome do Usuário</th>
+          <th>Atividades</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="user-table">
+
+        
+        <!-- As linhas serão geradas dinamicamente -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Tab Bar -->
+<div class="tab-bar" id="tab-bar">
+  <div class="tab-item active" data-tab="home">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    </svg>
+    <span>Home</span>
+  </div>
+  <div class="tab-item" data-tab="user">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+    </svg>
+    <span>User</span>
+  </div>
+  <div class="tab-item" data-tab="form">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3 3h18v2H3V3zm0 4h18v2H3V7zm0 4h18v2H3v-2zm0 4h18v2H3v-2zm0 4h18v2H3v-2z"/>
+    </svg>
+    <span>Form</span>
+  </div>
+  <div class="tab-item" data-tab="settings">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19.14 12.936a7.992 7.992 0 0 0 0-1.872l2.036-1.572a1 1 0 0 0-1.22-1.572l-2.036 1.572a7.992 7.992 0 0 0-1.872 0l-1.572-2.036a1 1 0 0 0-1.572 1.22l1.572 2.036a7.992 7.992 0 0 0 0 1.872l-1.572 2.036a1 1 0 0 0 1.572 1.22l1.572-2.036a7.992 7.992 0 0 0 1.872 0l2.036 1.572a1 1 0 0 0 1.22-1.572l-2.036-1.572z"/>
+    </svg>
+    <span>Settings</span>
+  </div>
+</div>
+
+
+  <!-- Alerta Personalizado -->
+  <div class="custom-alert" id="custom-alert">Presença Registrada!</div>
+
+  <script>
+    const menuIcon = document.getElementById('menu-icon');
+    const sidemenu = document.getElementById('sidemenu');
+    const searchInput = document.getElementById('search-input');
+    const tbody = document.querySelector('tbody');
+    const alertBox = document.getElementById('custom-alert');
+
+
+    // Array de usuários
+    const usuarios = [
+      { nome: "João Silva" },
+      { nome: "Maria Souza" },
+      { nome: "Lulu Souza" }
+    ];
+
+    // Array de atividades
+    const atividades = ["Dança", "Informática", "Jogos"];
+
+    // Função para gerar as linhas da tabela
+    function gerarTabela() {
+      const tabela = document.getElementById("user-table");
+      usuarios.forEach((usuario) => {
+        const row = document.createElement("tr");
+
+        // Coluna do nome do usuário
+        const nomeCell = document.createElement("td");
+        nomeCell.textContent = usuario.nome;
+        row.appendChild(nomeCell);
+
+        // Coluna das atividades com checkboxes
+        const atividadeCell = document.createElement("td");
+        const dropdownDiv = document.createElement("div");
+        dropdownDiv.classList.add("checkbox-dropdown");
+
+        const select = document.createElement("select");
+        const option = document.createElement("option");
+        option.textContent = "Selecionar Atividades";
+        select.appendChild(option);
+        dropdownDiv.appendChild(select);
+
+        const dropdownContent = document.createElement("div");
+        dropdownContent.classList.add("checkbox-dropdown-content");
+        atividades.forEach((atividade) => {
+          const label = document.createElement("label");
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.value = atividade.toLowerCase();
+          label.appendChild(checkbox);
+          label.append(atividade);
+          dropdownContent.appendChild(label);
+        });
+
+        dropdownDiv.appendChild(dropdownContent);
+        atividadeCell.appendChild(dropdownDiv);
+        row.appendChild(atividadeCell);
+
+
+
+        // Coluna do botão "Presente"
+        const acaoCell = document.createElement("td");
+        const button = document.createElement("button");
+        button.classList.add("presente-button");
+        button.textContent = "Presente";
+        acaoCell.appendChild(button);
+        row.appendChild(acaoCell);
+
+        // Adiciona a linha à tabela
+        tabela.appendChild(row);
+      });
+
+        // Função para exibir o alerta de presença registrada
+  function showPresenceAlert() {
+    // Criação do alerta customizado
+    const alert = document.createElement('div');
+    alert.classList.add('custom-alert', 'show');
+    alert.textContent = 'Presença registrada!';
+    
+    // Adiciona o alerta ao corpo da página
+    document.body.appendChild(alert);
+    
+    // Remove o alerta após 3 segundos
+    setTimeout(() => {
+      alert.classList.remove('show');
+      document.body.removeChild(alert);
+    }, 3000);
+  }
+
+  // Seleciona todos os botões com a classe .presente-button
+  const buttons = document.querySelectorAll('.presente-button');
+  
+  // Adiciona o evento de clique para cada botão
+  buttons.forEach(button => {
+    button.addEventListener('click', showPresenceAlert);
+  });
+    }
+/* sidebar */
+    menuIcon.addEventListener('click', () => {
+      sidemenu.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!sidemenu.contains(event.target) && !menuIcon.contains(event.target)) {
+        sidemenu.classList.remove('active');
+      }
+    });
+    // Chama a função para gerar a tabela na página
+    gerarTabela();
+
+
+
+    searchInput.addEventListener('focus', () => {
+      // Pode ser utilizado se houver uma tabBar que você não mencionou
+    });
+
+    searchInput.addEventListener('blur', () => {
+      // Pode ser utilizado se houver uma tabBar que você não mencionou
+    });
+
+
+    function exibirData() {
+      const data = new Date();
+      const dia = String(data.getDate()).padStart(2, '0');
+      const mes = String(data.getMonth() + 1).padStart(2, '0');
+      const ano = data.getFullYear();
+      const dataFormatada = `${dia}/${mes}/${ano}`;
+      document.getElementById('dataAtual').textContent = dataFormatada;
+    }
+
+    exibirData();
+    renderizarTabela(); // Chama a função para renderizar a tabela ao carregar a página
+    
+
+    document.addEventListener("DOMContentLoaded", function () {
+  const tabItems = document.querySelectorAll(".tab-item");
+
+  tabItems.forEach(item => {
+    item.addEventListener("click", function () {
+      // Remover a classe "active" de todas as tabs
+      tabItems.forEach(tab => tab.classList.remove("active"));
+
+      // Adicionar a classe "active" na tab clicada
+      item.classList.add("active");
+
+      // Redirecionar para a página correspondente
+      const tabName = item.getAttribute("data-tab");
+
+      switch (tabName) {
+        case "home":
+          window.location.href = "telamenu.html";
+          break;
+        case "user":
+          window.location.href = "usuarios.html";
+          break;
+        case "form":
+          window.location.href = "cadastro.html";
+          break;
+        case "settings":
+          window.location.href = "configuracao.html";
+          break;
+        default:
+          break;
+        }
+    });
+  });
+});
+
+  </script>
+</body>
+</html>

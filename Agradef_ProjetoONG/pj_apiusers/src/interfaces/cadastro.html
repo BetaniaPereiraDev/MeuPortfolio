@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Completo</title>
+    <style>
+      /* CSS Básico para o Estilo */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #f4f4f9;
+      }
+
+      .container {
+        max-width: 600px;
+        padding: 20px;
+      }
+
+      .card {
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 15px;
+      }
+
+      .circle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .red { background-color: #FF605C; }
+      .yellow { background-color: #FFBD44; }
+      .green { background-color: #00CA4E; }
+
+      h3 {
+        color: black;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      hr {
+        margin: 20px 0;
+        border: none;
+        border-top: 1px solid #ddd;
+      }
+
+      .input-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      input, select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+      }
+
+      input:focus {
+        border-color: #3a6df0;
+        outline: none;
+      }
+
+      button {
+        width: 36%; /* Ajustado para acomodar dois botões */
+        padding: 12px;
+        background-color: #3a6df0;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        margin-right: 4%; /* Espaçamento entre os botões */
+      }
+
+      button:hover {
+        background-color: #245dec;
+        transform: scale(1.02);
+      }
+
+      @media (max-width: 600px) {
+        .card {
+          padding: 15px;
+        }
+
+        h5 {
+          font-size: 12px;
+        }
+
+        button {
+          font-size: 16px;
+        }
+      }
+
+      /* Ocultar body2 e body3 inicialmente */
+      #body2, #body3, #deficienciaInfo, #medicacaoInfo {
+        display: none;
+      }
+    </style>
+</head>
+
+<body>
+    <!-- Body 1 (Cadastro de Usuário) -->
+    <div id="body1" class="container">
+        <div class="card">
+          <div class="header">
+            <div class="circle red"></div>
+            <div class="circle yellow"></div>
+            <div class="circle green"></div>
+            <h3 style="margin-left: 17px; margin-top: 13px;">Cadastro de Usuário</h3>
+          </div>
+          
+          <hr />
+      
+          <h4>Dados da Conta</h4><br>
+          
+          <form onsubmit="return goToNext()">
+            <div class="input-group">
+              <input type="text" id="name" name="name" placeholder="Nome Completo:" required />
+            </div>
+
+            <div class="input-group">
+              <input type="date" id="birthdate" name="birthdate" required />
+            </div>
+
+            <div class="input-group">
+              <input type="text" id="address" name="address" placeholder="Endereço:" required />
+            </div>
+
+            <div class="input-group">
+              <input type="text" id="father" name="father" placeholder="Nome do Pai:" required />
+            </div>
+
+            <div class="input-group">
+              <input type="text" id="mother" name="mother" placeholder="Nome da Mãe;" required />
+            </div>
+              <button type="button"  onclick="window.location.href='telamenu.html';" style="margin-left: 13px;">Voltar</button>
+              <button type="submit" style="margin-left: 28px;" >Próximo</button>
+          
+          </form>
+        </div>
+    </div>
+
+    <!-- Body 2 (Responsável e Encaminhamento) -->
+    <div id="body2" class="container">
+        <div class="card">
+          <div class="header">
+            <div class="circle red"></div>
+            <div class="circle yellow"></div>
+            <div class="circle green"></div>
+            <h3 style="margin-left: 17px; margin-top: 13px;">Dados do Responsável</h3>
+          </div>
+          
+          <hr/>
+       
+  
+
+          <label style="color: black;">Informações Adicionais</label><br>
+
+          <form onsubmit="return goToMedical()">
+            <div class="input-group">
+              <input type="text" id="responsavel" name="responsavel" placeholder="Nome do Responsável:" required />
+            </div>
+
+            <div class="input-group">
+              <input type="tel" id="phone" name="phone" placeholder="Telefone do Responsável:" required />
+            </div><br>
+
+            <label style="color: black;">Origem do Encaminhamento</label><br>
+
+            <div class="input-group">
+              <input type="text" id="secretary" name="secretary" value="Secretaria de Assistência" readonly />
+            </div>
+
+            <div class="input-group">
+              <input type="text" id="other" placeholder="Outro:" name="other" />
+            </div>
+
+            <div style="display: flex; justify-content: space-between;">
+              <button type="button" onclick="goToPrevious('body2')">Anterior</button>
+              <button type="submit">Próximo</button>
+            </div>
+          </form>
+        </div>
+    </div>
+
+    <!-- Body 3 (Informações Médicas) -->
+    <div id="body3" class="container">
+        <div class="card">
+          <div class="header">
+            <div class="circle red"></div>
+            <div class="circle yellow"></div>
+            <div class="circle green"></div>
+            <h3 style="margin-left: 17px; margin-top: 13px;">Informações Médicas</h3>
+          </div>
+          
+          <hr/>
+
+          <form onsubmit="return finalizeRegistration()">
+            <div class="input-group">
+              <label>O usuário possui alguma deficiência?</label>
+              <select id="deficiencia" onchange="toggleDeficienciaInfo()">
+                <option value="nao">Não</option>
+                <option value="sim">Sim</option>
+              </select>
+            </div>
+
+            <div class="input-group" id="deficienciaInfo">
+              <input type="text" placeholder="Qual deficiência?" />
+            </div><br>
+
+            <div class="input-group">
+              <label>O usuário toma algum tipo de medicação?</label>
+              <select id="medicacao" onchange="toggleMedicacaoInfo()">
+                <option value="nao">Não</option>
+                <option value="sim">Sim</option>
+              </select>
+            </div>
+
+            <div class="input-group" id="medicacaoInfo">
+              <input type="text" placeholder="Qual medicação?" />
+            </div><br>
+
+            <div class="input-group">
+                <label>Escolha as atividades:</label><br>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                  <div>
+                    <input type="checkbox" id="danca" name="atividade" value="danca">
+                    <label for="danca">Dança</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="informatica" name="atividade" value="informatica">
+                    <label for="informatica">Informática</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="musica" name="atividade" value="musica">
+                    <label for="musica">Música</label>
+                  </div>
+                </div>
+              </div>
+              
+
+            <div style="display: flex; justify-content: space-between;">
+              <button type="button" onclick="goToPrevious('body3')">Anterior</button>
+              <button type="submit">Finalizar Cadastro</button>
+            </div>
+          </form>
+        </div>
+    </div>
+
+    <script>
+     // Controle de navegação entre as seções
+  function goToNext() {
+    document.getElementById('body1').style.display = 'none';
+    document.getElementById('body2').style.display = 'block';
+    return false;
+  }
+
+  function goToMedical() {
+    document.getElementById('body2').style.display = 'none';
+    document.getElementById('body3').style.display = 'block';
+    return false;
+  }
+
+  function goToPrevious(bodyId) {
+    document.getElementById(bodyId).style.display = 'none';
+    if (bodyId === 'body2') {
+      document.getElementById('body1').style.display = 'block';
+    } else if (bodyId === 'body3') {
+      document.getElementById('body2').style.display = 'block';
+    }
+  }
+
+  // Controle de exibição dos campos relacionados a deficiência e medicação
+  function toggleDeficienciaInfo() {
+    const deficiencia = document.getElementById('deficiencia').value;
+    document.getElementById('deficienciaInfo').style.display = deficiencia === 'sim' ? 'block' : 'none';
+  }
+
+  function toggleMedicacaoInfo() {
+    const medicacao = document.getElementById('medicacao').value;
+    document.getElementById('medicacaoInfo').style.display = medicacao === 'sim' ? 'block' : 'none';
+  }
+
+  // Finalização do cadastro com redirecionamento
+  function finalizeRegistration() {
+    alert('Cadastro Finalizado com Sucesso!');
+    window.location.href = 'telamenu.html'; // Redireciona para a página telamenu.html
+    return false;
+  }
+    </script>
+</body>
+</html>

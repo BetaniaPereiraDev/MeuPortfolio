@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configurações</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .settings-container {
+      background-color: white;
+      width: 100%;
+      max-width: 500px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .settings-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .settings-header h1 {
+      color: #333;
+      font-size: 1.8rem;
+    }
+
+    .settings-option {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .settings-option:last-child {
+      border-bottom: none;
+    }
+
+    .settings-option label {
+      font-weight: bold;
+    }
+
+    .settings-option select, .settings-option input {
+      padding: 8px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    .btn-save, .btn-contact {
+      background-color: #3a6df0;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 20px;
+    }
+
+    .btn-save:hover, .btn-contact:hover {
+      background-color: #2e58cc;
+    }
+
+    @media (max-width: 768px) {
+      .settings-container {
+        padding: 15px;
+      }
+
+      .settings-header h1 {
+        font-size: 1.6rem;
+      }
+
+      .settings-option {
+        font-size: 0.9rem;
+      }
+
+      .btn-save, .btn-contact {
+        font-size: 1rem;
+        padding: 12px;
+      }
+    }
+/* cheeckbox */
+.container {
+  cursor: pointer;
+  margin-right: 50px;
+}
+
+.container input {
+  display: none;
+
+}
+
+.container svg {
+  overflow: visible;
+}
+
+.path {
+  margin-right: 50px;
+  fill: none;
+  stroke: #2e58cc;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
+  stroke-dasharray: 241 9999999;
+  stroke-dashoffset: 0;
+}
+
+.container input:checked ~ svg .path {
+  stroke-dasharray: 70.5096664428711 9999999;
+  stroke-dashoffset: -262.2723388671875;
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="settings-container">
+    <div class="settings-header">
+      <h1>Configurações</h1>
+    </div>
+
+    <!-- Alterar Senha -->
+    <div class="settings-option">
+      <label for="password">Alterar Senha</label>
+      <button class="btn-contact" style="width: 38%;" onclick="window.location.href='alterarsenha.html';">Alterar</button>
+    </div>
+
+    <!-- Contato com o Suporte -->
+    <div class="settings-option">
+      <label for="support">Contato com o Suporte</label>
+      <button class="btn-contact" style="width: 38%;" onclick="redirectToWhatsApp()">Suporte</button>
+    </div>
+
+    <!-- Notificações -->
+    <div class="settings-option">
+      <label for="notifications">Notificações</label>
+     
+<label class="container">
+  <input type="checkbox">
+  <svg viewBox="0 0 64 64" height="2em" width="2em">
+    <path d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16" pathLength="575.0541381835938" class="path"></path>
+  </svg>
+</label>
+    </div>
+
+    <!-- Botão de salvar configurações -->
+    <button class="btn-save" onclick="saveSettings()">Salvar Configurações</button>
+  </div>
+
+  <script>
+    function saveSettings() {
+      alert("Configurações salvas com sucesso!");
+      // Aqui você pode adicionar código para salvar as configurações, como em localStorage ou enviando para um servidor.
+    }
+
+    // Redireciona para o WhatsApp ao clicar no botão "Suporte"
+    function redirectToWhatsApp() {
+      const phoneNumber = '5519991236812'; // Substitua pelo número real do suporte
+      const message = encodeURIComponent('Olá, preciso de suporte!');
+      const url = `https://wa.me/${phoneNumber}?text=${message}`;
+      window.open(url, '_blank');
+    }
+  </script>
+
+</body>
+</html>

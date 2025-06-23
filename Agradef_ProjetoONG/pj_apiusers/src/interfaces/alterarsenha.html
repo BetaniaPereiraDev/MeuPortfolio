@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alterar Senha</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background-color: white;
+      padding: 3rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      transition: box-shadow 0.3s;
+    }
+
+    .container:hover {
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+      font-size: 32px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #4a4a4a;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 0.5rem;
+    }
+
+    .icon-input {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fafafa;
+      padding: 0.75rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .icon-input:focus-within {
+      border-color: #3a6df0;
+      background-color: #fff;
+    }
+
+    .icon-input svg {
+      margin-right: 10px;
+      width: 24px;
+      height: 24px;
+      fill: #777;
+    }
+
+    .icon-input input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      color: #333;
+      background-color: transparent;
+    }
+
+    .form-group a {
+      display: block;
+      font-size: 0.85rem;
+      color: #3a6ef0;
+      text-align: right;
+      text-decoration: none;
+      margin-top: 0.5rem;
+    }
+
+    .form-group a:hover {
+      text-decoration: underline;
+    }
+
+    .button {
+      width: 100%;
+      padding: 0.85rem;
+      background: linear-gradient(45deg, #3a6df0, #4338ca);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.1s;
+    }
+
+    .button:hover {
+      background: linear-gradient(45deg, #4338ca, #3a6df0);
+      transform: scale(1.03);
+    }
+
+    .signup {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .signup a {
+      color: #3a6df0;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .signup a:hover {
+      text-decoration: underline;
+    }
+
+    #password-strength {
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+
+    .password-strength {
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    .password-match-message {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    #password-criteria {
+      list-style: none;
+      padding-left: 0;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    #password-criteria li {
+      margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 2rem;
+      }
+
+      h2 {
+        font-size: 1.8rem;
+      }
+
+      .button {
+        padding: 0.75rem;
+      }
+    }
+   
+.invalid-input {
+  border-color: red;
+  transition: border-color 0.3s ease;
+}
+  /* Novo card de verificação de código */
+  #verification-card {
+      display: none;
+    }
+
+    /* Outros estilos */
+    .signup {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .signup a {
+      color: #3a6df0;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .signup a:hover {
+      text-decoration: underline;
+    }
+
+    #password-strength {
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 2rem;
+      }
+
+      h2 {
+        font-size: 1.8rem;
+      }
+
+      .button {
+        padding: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- <div class="container">
+    <h2>Alterar Senha</h2>
+    <form action="#" method="POST" id="password-form">
+      <div class="form-group">
+        <label for="password">Nova Senha:</label>
+        <div class="icon-input">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 8V6a6 6 0 1 1 12 0v2h-2V6a4 4 0 1 0-8 0v2H6zm0 2h12v10H6V10zm3 5h2v2H9v-2z"/>
+          </svg>
+          <input type="password" id="password" name="password" required aria-describedby="passwordHelp">
+          <button type="button" onclick="togglePasswordVisibility('password')">👁️</button>
+        </div>
+        <div id="password-strength" class="password-strength"></div>
+      </div>
+
+      <ul id="password-criteria">
+        <li id="length-criteria" style="color: red;">Pelo menos 8 caracteres</li>
+        <li id="uppercase-criteria" style="color: red;">Uma letra maiúscula</li>
+        <li id="number-criteria" style="color: red;">Um número</li>
+        <li id="symbol-criteria" style="color: red;">Um símbolo</li>
+      </ul>
+
+      <div class="form-group">
+        <label for="confirm-password">Confirmar Senha:</label>
+        <div class="icon-input">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 8V6a6 6 0 1 1 12 0v2h-2V6a4 4 0 1 0-8 0v2H6zm0 2h12v10H6V10zm3 5h2v2H9v-2z"/>
+          </svg>
+          <input type="password" id="confirm-password" name="confirm-password" required>
+          <button type="button" onclick="togglePasswordVisibility('confirm-password')">👁️</button>
+        </div>
+        <div id="password-match-message" class="password-match-message"></div>
+      </div>
+
+      <button type="submit" class="button" id="submit-button" disabled>Alterar Senha</button>
+      <p id="success-message" style="display: none; color: green;">Senha alterada com sucesso!</p>
+    </form>
+  </div> -->
+    <!-- Novo card de verificação de código -->
+   <!--  <div id="verification-card" class="container">
+        <h2>Verificação de Código</h2>
+        <p>Insira o código enviado para o seu email:</p>
+        <div class="form-group">
+          <input type="text" id="verification-code" name="verification-code" required placeholder="Código de verificação">
+        </div>
+        <button type="submit" class="button">Verificar Código</button>
+      </div>
+    </div>
+   -->
+   <div class="container">
+    <h2>Alterar Senha</h2>
+    <form action="#" method="POST" id="password-form">
+      <div class="form-group">
+        <label for="password">Nova Senha:</label>
+        <div class="icon-input">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 8V6a6 6 0 1 1 12 0v2h-2V6a4 4 0 1 0-8 0v2H6zm0 2h12v10H6V10zm3 5h2v2H9v-2z"/>
+          </svg>
+          <input type="password" id="password" name="password" required aria-describedby="passwordHelp">
+          <button type="button" onclick="togglePasswordVisibility('password')">👁️</button>
+        </div>
+        <div id="password-strength" class="password-strength"></div>
+      </div>
+
+      <ul id="password-criteria">
+        <!-- Critérios de senha serão carregados pelo array -->
+      </ul>
+
+      <div class="form-group">
+        <label for="confirm-password">Confirmar Senha:</label>
+        <div class="icon-input">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 8V6a6 6 0 1 1 12 0v2h-2V6a4 4 0 1 0-8 0v2H6zm0 2h12v10H6V10zm3 5h2v2H9v-2z"/>
+          </svg>
+          <input type="password" id="confirm-password" name="confirm-password" required>
+          <button type="button" onclick="togglePasswordVisibility('confirm-password')">👁️</button>
+        </div>
+        <div id="password-match-message" class="password-match-message"></div>
+      </div>
+
+      <button type="submit" class="button" id="submit-button" disabled>Alterar Senha</button>
+      <p id="success-message" style="display: none; color: green;">Senha alterada com sucesso!</p>
+    </form>
+  </div>
+  <!-- Novo card de verificação de código -->
+  <div id="verification-card" class="container">
+    <h2>Verificação de Código</h2>
+    <p>Insira o código enviado para o seu email:</p>
+    <div class="form-group">
+      <input type="text" id="verification-code" name="verification-code" required placeholder="Código de verificação">
+    </div>
+    <button type="submit" class="button">Verificar Código</button>
+  </div>
+
+
+
+   
+  <script>
+    const passwordCriteria = [
+      { id: 'length-criteria', text: 'Pelo menos 8 caracteres', validate: (password) => password.length >= 8 },
+      { id: 'uppercase-criteria', text: 'Uma letra maiúscula', validate: (password) => /[A-Z]/.test(password) },
+      { id: 'number-criteria', text: 'Um número', validate: (password) => /\d/.test(password) },
+      { id: 'symbol-criteria', text: 'Um símbolo', validate: (password) => /\W/.test(password) }
+    ];
+
+    // Carregar os critérios dinamicamente
+    const passwordCriteriaList = document.getElementById('password-criteria');
+    passwordCriteria.forEach(criteria => {
+      const li = document.createElement('li');
+      li.id = criteria.id;
+      li.textContent = criteria.text;
+      li.style.color = 'red'; // Inicialmente vermelha
+      passwordCriteriaList.appendChild(li);
+    });
+
+    function validatePasswordStrength(password) {
+      let strength = 0;
+      passwordCriteria.forEach(criteria => {
+        const li = document.getElementById(criteria.id);
+        if (criteria.validate(password)) {
+          li.style.color = 'green';
+          strength++;
+        } else {
+          li.style.color = 'red';
+        }
+      });
+      return strength;
+    }
+
+    function togglePasswordVisibility(passwordId) {
+      const passwordField = document.getElementById(passwordId);
+      const type = passwordField.type === 'password' ? 'text' : 'password';
+      passwordField.type = type;
+    }
+
+    document.getElementById('password').addEventListener('input', function() {
+      const password = this.value;
+      const strength = validatePasswordStrength(password);
+      const strengthText = document.getElementById('password-strength');
+      if (strength < 2) {
+        strengthText.textContent = 'Senha fraca';
+        strengthText.style.color = 'red';
+      } else if (strength < 3) {
+        strengthText.textContent = 'Senha média';
+        strengthText.style.color = 'orange';
+      } else {
+        strengthText.textContent = 'Senha forte';
+        strengthText.style.color = 'green';
+      }
+    });
+
+    document.getElementById('confirm-password').addEventListener('input', function() {
+      const password = document.getElementById('password').value;
+      const confirmPassword = this.value;
+      const message = document.getElementById('password-match-message');
+      const submitButton = document.getElementById('submit-button');
+      if (confirmPassword === password) {
+        message.textContent = 'As senhas coincidem';
+        message.style.color = 'green';
+        submitButton.disabled = false;
+      } else {
+        message.textContent = 'As senhas não coincidem';
+        message.style.color = 'red';
+        submitButton.disabled = true;
+      }
+    });
+
+    document.getElementById('password-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      document.getElementById('success-message').style.display = 'block';
+    });
+
+  </script>
+</body>
+</html>
